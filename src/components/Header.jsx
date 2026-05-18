@@ -1,6 +1,6 @@
-function Header() {
+function Header({ searchTerm, setSearchTerm }) {
   return (
-    <div className="flex items-center justify-between gap-4">
+    <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
       
       <div>
         <h2 className="text-3xl font-bold">
@@ -15,7 +15,9 @@ function Header() {
       <input
         type="text"
         placeholder="Search snippets..."
-        className="w-[320px] rounded-xl border border-slate-700 bg-slate-900 px-4 py-3 outline-none transition focus:border-cyan-400"
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        className="w-full rounded-xl border border-slate-700 bg-slate-900 px-4 py-3 outline-none transition focus:border-cyan-400 lg:w-[350px]"
       />
     </div>
   )

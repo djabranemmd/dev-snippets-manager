@@ -10,9 +10,21 @@ import snippetsData from './data/snippets'
 function App() {
   const [snippets, setSnippets] = useState(snippetsData)
 
+  const [searchTerm, setSearchTerm] = useState('')
+
   const addSnippet = (newSnippet) => {
     setSnippets([newSnippet, ...snippets])
   }
+
+  const filteredSnippets = snippets.filter((snippet) => {
+    const search = searchTerm.toLowerCase()
+
+    return (
+      snippet.title.toLowerCase().includes(search) ||
+      snippet.language.toLowerCase().includes(search) ||
+      snippet.code.toLowerCase().includes(search)
+    )
+  })
 
   return (
     <div className="min-h-screen bg-slate-950 text-white">
@@ -23,11 +35,14 @@ function App() {
 
         <main className="flex-1 p-8">
           
-          <Header />
+          <Header
+            searchTerm={searchTerm}
+            setSearchTerm={setSearchTerm}
+          />
 
           <AddSnippetForm addSnippet={addSnippet} />
 
-          <SnippetsGrid snippets={snippets} />
+          <SnippetsGrid snippets={filteredSnippets} />
 
         </main>
       </div>
