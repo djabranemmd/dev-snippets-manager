@@ -1,5 +1,11 @@
 import { useState } from 'react'
 
+import SyntaxHighlighter from 'react-syntax-highlighter'
+
+import {
+  atomOneLight,
+} from 'react-syntax-highlighter/dist/esm/styles/hljs'
+
 function SnippetCard({
   snippet,
   deleteSnippet,
@@ -69,11 +75,24 @@ function SnippetCard({
         </div>
       </div>
 
-      <pre className="mt-6 overflow-x-auto rounded-2xl bg-[#f8f6f2] p-5 text-sm leading-7 text-slate-700">
-        <code>
+      <div className="mt-6 overflow-hidden rounded-2xl border border-slate-200">
+        
+        <SyntaxHighlighter
+          language={snippet.language.toLowerCase()}
+          style={atomOneLight}
+          customStyle={{
+            margin: 0,
+            padding: '24px',
+            background: '#f8fafc',
+            fontSize: '14px',
+            borderRadius: '0px',
+          }}
+          wrapLongLines={true}
+        >
           {snippet.code}
-        </code>
-      </pre>
+        </SyntaxHighlighter>
+
+      </div>
     </div>
   )
 }
