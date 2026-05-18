@@ -1,6 +1,9 @@
 import { useState } from 'react'
 
-function SnippetCard({ snippet }) {
+function SnippetCard({
+  snippet,
+  deleteSnippet,
+}) {
   const [copied, setCopied] = useState(false)
 
   const handleCopy = async () => {
@@ -15,6 +18,16 @@ function SnippetCard({ snippet }) {
 
     } catch (error) {
       console.log('Copy failed:', error)
+    }
+  }
+
+  const handleDelete = () => {
+    const confirmDelete = window.confirm(
+      'Are you sure you want to delete this snippet?'
+    )
+
+    if (confirmDelete) {
+      deleteSnippet(snippet.id)
     }
   }
 
@@ -33,16 +46,27 @@ function SnippetCard({ snippet }) {
           </span>
         </div>
 
-        <button
-          onClick={handleCopy}
-          className={`rounded-xl px-4 py-2 text-sm font-medium transition ${
-            copied
-              ? 'bg-green-100 text-green-700'
-              : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
-          }`}
-        >
-          {copied ? 'Copied!' : 'Copy'}
-        </button>
+        <div className="flex items-center gap-2">
+
+          <button
+            onClick={handleCopy}
+            className={`rounded-xl px-4 py-2 text-sm font-medium transition ${
+              copied
+                ? 'bg-green-100 text-green-700'
+                : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+            }`}
+          >
+            {copied ? 'Copied!' : 'Copy'}
+          </button>
+
+          <button
+            onClick={handleDelete}
+            className="rounded-xl bg-red-100 px-4 py-2 text-sm font-medium text-red-600 transition hover:bg-red-200"
+          >
+            Delete
+          </button>
+
+        </div>
       </div>
 
       <pre className="mt-6 overflow-x-auto rounded-2xl bg-[#f8f6f2] p-5 text-sm leading-7 text-slate-700">

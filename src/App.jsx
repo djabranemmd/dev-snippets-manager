@@ -16,6 +16,14 @@ function App() {
     setSnippets([newSnippet, ...snippets])
   }
 
+  const deleteSnippet = (id) => {
+    const updatedSnippets = snippets.filter(
+      (snippet) => snippet.id !== id
+    )
+
+    setSnippets(updatedSnippets)
+  }
+
   const filteredSnippets = snippets.filter((snippet) => {
     const search = searchTerm.toLowerCase()
 
@@ -42,7 +50,10 @@ function App() {
 
           <AddSnippetForm addSnippet={addSnippet} />
 
-          <SnippetsGrid snippets={filteredSnippets} />
+          <SnippetsGrid
+            snippets={filteredSnippets}
+            deleteSnippet={deleteSnippet}
+          />
 
         </main>
       </div>

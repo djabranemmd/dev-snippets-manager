@@ -1,6 +1,9 @@
 import SnippetCard from './SnippetCard'
 
-function SnippetsGrid({ snippets }) {
+function SnippetsGrid({
+  snippets,
+  deleteSnippet,
+}) {
   return (
     <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
       
@@ -8,6 +11,7 @@ function SnippetsGrid({ snippets }) {
         <SnippetCard
           key={snippet.id}
           snippet={snippet}
+          deleteSnippet={deleteSnippet}
         />
       ))}
     </div>
