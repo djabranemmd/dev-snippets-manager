@@ -27,13 +27,13 @@ function App() {
   })
 
   return (
-    <div className="min-h-screen bg-slate-950 text-white">
+    <div className="min-h-screen bg-[#f8f6f2] text-slate-900">
       
       <div className="flex">
         
         <Sidebar />
 
-        <main className="flex-1 p-8">
+        <main className="flex-1 p-10">
           
           <Header
             searchTerm={searchTerm}

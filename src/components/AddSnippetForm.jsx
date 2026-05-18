@@ -27,23 +27,23 @@ function AddSnippetForm({ addSnippet }) {
   }
 
   return (
-    <div className="mt-8 rounded-2xl border border-slate-800 bg-slate-900 p-6">
+    <div className="mt-10 rounded-3xl border border-slate-200 bg-white p-8 shadow-sm">
       
-      <h2 className="text-2xl font-bold">
+      <h2 className="text-2xl font-bold text-slate-900">
         Add New Snippet
       </h2>
 
-      <p className="mt-2 text-slate-400">
-        Save reusable snippets and access them anytime.
+      <p className="mt-2 text-slate-500">
+        Store useful snippets and access them anytime.
       </p>
 
       <form
         onSubmit={handleSubmit}
-        className="mt-6 space-y-5"
+        className="mt-8 space-y-6"
       >
 
         <div>
-          <label className="mb-2 block text-sm text-slate-300">
+          <label className="mb-2 block text-sm font-medium text-slate-700">
             Snippet Title
           </label>
 
@@ -52,52 +52,32 @@ function AddSnippetForm({ addSnippet }) {
             placeholder="Example: Fetch API"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 outline-none transition focus:border-cyan-400"
+            className="w-full rounded-2xl border border-slate-200 bg-[#fcfbf8] px-5 py-4 outline-none transition focus:border-sky-400 focus:ring-4 focus:ring-sky-100"
           />
         </div>
 
         <div>
-          <label className="mb-2 block text-sm text-slate-300">
+          <label className="mb-2 block text-sm font-medium text-slate-700">
             Language
           </label>
 
           <select
             value={language}
             onChange={(e) => setLanguage(e.target.value)}
-            className="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 outline-none transition focus:border-cyan-400"
+            className="w-full rounded-2xl border border-slate-200 bg-[#fcfbf8] px-5 py-4 outline-none transition focus:border-sky-400 focus:ring-4 focus:ring-sky-100"
           >
-            <option value="">
-              Select Language
-            </option>
-
-            <option value="JavaScript">
-              JavaScript
-            </option>
-
-            <option value="React">
-              React
-            </option>
-
-            <option value="CSS">
-              CSS
-            </option>
-
-            <option value="HTML">
-              HTML
-            </option>
-
-            <option value="SQL">
-              SQL
-            </option>
-
-            <option value="Bash">
-              Bash
-            </option>
+            <option value="">Select Language</option>
+            <option value="JavaScript">JavaScript</option>
+            <option value="React">React</option>
+            <option value="CSS">CSS</option>
+            <option value="HTML">HTML</option>
+            <option value="SQL">SQL</option>
+            <option value="Bash">Bash</option>
           </select>
         </div>
 
         <div>
-          <label className="mb-2 block text-sm text-slate-300">
+          <label className="mb-2 block text-sm font-medium text-slate-700">
             Code
           </label>
 
@@ -106,13 +86,13 @@ function AddSnippetForm({ addSnippet }) {
             placeholder="Write your code snippet here..."
             value={code}
             onChange={(e) => setCode(e.target.value)}
-            className="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 font-mono outline-none transition focus:border-cyan-400"
+            className="w-full rounded-2xl border border-slate-200 bg-[#fcfbf8] px-5 py-4 font-mono outline-none transition focus:border-sky-400 focus:ring-4 focus:ring-sky-100"
           />
         </div>
 
         <button
           type="submit"
-          className="rounded-xl bg-cyan-500 px-6 py-3 font-semibold text-slate-950 transition hover:bg-cyan-400"
+          className="rounded-2xl bg-sky-500 px-6 py-4 font-semibold text-white transition hover:bg-sky-400"
         >
           Save Snippet
         </button>
