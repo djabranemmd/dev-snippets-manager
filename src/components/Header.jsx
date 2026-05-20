@@ -1,25 +1,44 @@
-function Header({ searchTerm, setSearchTerm }) {
+function Header({
+  searchTerm,
+  setSearchTerm,
+  setSidebarOpen,
+}) {
   return (
-    <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+    <header className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
       
-      <div>
-        <h2 className="text-4xl font-bold tracking-tight text-slate-900">
-          My Snippets
-        </h2>
+      <div className="flex items-center gap-4">
 
-        <p className="mt-3 text-slate-500">
-          Save, search, and reuse your favorite code snippets faster.
-        </p>
+        <button
+          onClick={() => setSidebarOpen(true)}
+          className="flex h-12 w-12 items-center justify-center rounded-2xl border border-slate-200 bg-white text-2xl text-slate-700 shadow-sm lg:hidden"
+        >
+          ☰
+        </button>
+
+        <div>
+          <h2 className="text-4xl font-bold tracking-tight text-slate-900">
+            My Snippets
+          </h2>
+
+          <p className="mt-2 text-slate-500">
+            Quickly search and manage your saved code snippets.
+          </p>
+        </div>
+
       </div>
 
-      <input
-        type="text"
-        placeholder="Search snippets..."
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-        className="w-full rounded-2xl border border-slate-200 bg-white px-5 py-4 outline-none transition focus:border-sky-400 focus:ring-4 focus:ring-sky-100 lg:w-[380px]"
-      />
-    </div>
+      <div className="w-full lg:w-[350px]">
+        
+        <input
+          type="text"
+          placeholder="Search snippets..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="w-full rounded-2xl border border-slate-200 bg-white px-5 py-4 shadow-sm outline-none transition focus:border-sky-400 focus:ring-4 focus:ring-sky-100"
+        />
+
+      </div>
+    </header>
   )
 }
 

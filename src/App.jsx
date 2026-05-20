@@ -23,6 +23,8 @@ function App() {
 
   const [editingSnippet, setEditingSnippet] = useState(null)
 
+  const [sidebarOpen, setSidebarOpen] = useState(false)
+
   useEffect(() => {
     localStorage.setItem(
       'snippets',
@@ -99,13 +101,16 @@ function App() {
         <Sidebar
           activeFilter={activeFilter}
           setActiveFilter={setActiveFilter}
+          sidebarOpen={sidebarOpen}
+          setSidebarOpen={setSidebarOpen}
         />
 
-        <main className="flex-1 p-10">
+        <main className="flex-1 p-5 lg:p-10">
           
           <Header
             searchTerm={searchTerm}
             setSearchTerm={setSearchTerm}
+            setSidebarOpen={setSidebarOpen}
           />
 
           <AddSnippetForm addSnippet={addSnippet} />
