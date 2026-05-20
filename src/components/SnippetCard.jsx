@@ -71,9 +71,22 @@ function SnippetCard({
 
           </div>
 
-          <span className="mt-3 inline-block rounded-xl bg-sky-100 px-3 py-1 text-sm font-medium text-sky-700">
-            {snippet.language}
-          </span>
+          <div className="mt-3 flex flex-wrap gap-2">
+
+            <span className="rounded-xl bg-sky-100 px-3 py-1 text-sm font-medium text-sky-700">
+              {snippet.language}
+            </span>
+
+            {snippet.tags?.map((tag) => (
+              <span
+                key={tag}
+                className="rounded-xl bg-slate-100 px-3 py-1 text-xs font-medium text-slate-600"
+              >
+                #{tag}
+              </span>
+            ))}
+
+          </div>
 
         </div>
 

@@ -10,12 +10,15 @@ function EditSnippetModal({
   const [title, setTitle] = useState('')
   const [language, setLanguage] = useState('')
   const [code, setCode] = useState('')
+  const [tags, setTags] = useState('')
 
   useEffect(() => {
     if (snippet) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setTitle(snippet.title)
       setLanguage(snippet.language)
       setCode(snippet.code)
+      setTags(snippet.tags?.join(', ') || '')
     }
   }, [snippet])
 
@@ -27,6 +30,10 @@ function EditSnippetModal({
       title,
       language,
       code,
+      tags: tags
+        .split(',')
+        .map((tag) => tag.trim())
+        .filter(Boolean),
     }
 
     updateSnippet(updatedSnippet)
@@ -93,6 +100,20 @@ function EditSnippetModal({
               <option value="SQL">SQL</option>
               <option value="Bash">Bash</option>
             </select>
+          </div>
+
+          <div>
+            <label className="mb-2 block text-sm font-medium text-slate-700">
+              Tags
+            </label>
+
+            <input
+              type="text"
+              value={tags}
+              onChange={(e) => setTags(e.target.value)}
+              placeholder="Example: api, frontend, hooks"
+              className="w-full rounded-2xl border border-slate-200 bg-[#fcfbf8] px-5 py-4 outline-none transition focus:border-sky-400 focus:ring-4 focus:ring-sky-100"
+            />
           </div>
 
           <div>

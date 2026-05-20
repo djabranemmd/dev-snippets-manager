@@ -81,9 +81,12 @@ function App() {
     const search = searchTerm.toLowerCase()
 
     const matchesSearch =
-      snippet.title.toLowerCase().includes(search) ||
-      snippet.language.toLowerCase().includes(search) ||
-      snippet.code.toLowerCase().includes(search)
+  snippet.title.toLowerCase().includes(search) ||
+  snippet.language.toLowerCase().includes(search) ||
+  snippet.code.toLowerCase().includes(search) ||
+  snippet.tags?.some((tag) =>
+    tag.toLowerCase().includes(search)
+  )
 
     const matchesFilter =
       activeFilter === 'all'

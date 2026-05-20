@@ -6,6 +6,7 @@ function AddSnippetForm({ addSnippet }) {
   const [title, setTitle] = useState('')
   const [language, setLanguage] = useState('')
   const [code, setCode] = useState('')
+  const [tags, setTags] = useState('')
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -21,6 +22,10 @@ function AddSnippetForm({ addSnippet }) {
       title,
       language,
       code,
+      tags: tags
+        .split(',')
+        .map((tag) => tag.trim())
+        .filter(Boolean),
     }
 
     addSnippet(newSnippet)
@@ -30,6 +35,7 @@ function AddSnippetForm({ addSnippet }) {
     setTitle('')
     setLanguage('')
     setCode('')
+    setTags('')
   }
 
   return (
@@ -80,6 +86,20 @@ function AddSnippetForm({ addSnippet }) {
             <option value="SQL">SQL</option>
             <option value="Bash">Bash</option>
           </select>
+        </div>
+
+        <div>
+          <label className="mb-2 block text-sm font-medium text-slate-700">
+            Tags
+          </label>
+
+          <input
+            type="text"
+            placeholder="Example: api, frontend, async"
+            value={tags}
+            onChange={(e) => setTags(e.target.value)}
+            className="w-full rounded-2xl border border-slate-200 bg-[#fcfbf8] px-5 py-4 outline-none transition focus:border-sky-400 focus:ring-4 focus:ring-sky-100"
+          />
         </div>
 
         <div>
