@@ -5,6 +5,7 @@ import Header from './components/Header'
 import SnippetsGrid from './components/SnippetsGrid'
 import AddSnippetForm from './components/AddSnippetForm'
 import EditSnippetModal from './components/EditSnippetModal'
+import DataActions from './components/DataActions'
 
 import snippetsData from './data/snippets'
 
@@ -39,9 +40,12 @@ function App() {
   useEffect(() => {
     if (darkMode) {
       document.documentElement.classList.add('dark')
+
       localStorage.setItem('theme', 'dark')
+
     } else {
       document.documentElement.classList.remove('dark')
+
       localStorage.setItem('theme', 'light')
     }
   }, [darkMode])
@@ -91,6 +95,10 @@ function App() {
     setSnippets(updatedSnippets)
   }
 
+  const importSnippets = (importedSnippets) => {
+    setSnippets(importedSnippets)
+  }
+
   const filteredSnippets = snippets.filter((snippet) => {
     const search = searchTerm.toLowerCase()
 
@@ -132,6 +140,11 @@ function App() {
               searchTerm={searchTerm}
               setSearchTerm={setSearchTerm}
               setSidebarOpen={setSidebarOpen}
+            />
+
+            <DataActions
+              snippets={snippets}
+              importSnippets={importSnippets}
             />
 
             <AddSnippetForm addSnippet={addSnippet} />
