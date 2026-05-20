@@ -25,12 +25,26 @@ function App() {
 
   const [sidebarOpen, setSidebarOpen] = useState(false)
 
+  const [darkMode, setDarkMode] = useState(() => {
+    return localStorage.getItem('theme') === 'dark'
+  })
+
   useEffect(() => {
     localStorage.setItem(
       'snippets',
       JSON.stringify(snippets)
     )
   }, [snippets])
+
+  useEffect(() => {
+    if (darkMode) {
+      document.documentElement.classList.add('dark')
+      localStorage.setItem('theme', 'dark')
+    } else {
+      document.documentElement.classList.remove('dark')
+      localStorage.setItem('theme', 'light')
+    }
+  }, [darkMode])
 
   const addSnippet = (newSnippet) => {
     setSnippets([
@@ -81,12 +95,12 @@ function App() {
     const search = searchTerm.toLowerCase()
 
     const matchesSearch =
-  snippet.title.toLowerCase().includes(search) ||
-  snippet.language.toLowerCase().includes(search) ||
-  snippet.code.toLowerCase().includes(search) ||
-  snippet.tags?.some((tag) =>
-    tag.toLowerCase().includes(search)
-  )
+      snippet.title.toLowerCase().includes(search) ||
+      snippet.language.toLowerCase().includes(search) ||
+      snippet.code.toLowerCase().includes(search) ||
+      snippet.tags?.some((tag) =>
+        tag.toLowerCase().includes(search)
+      )
 
     const matchesFilter =
       activeFilter === 'all'
@@ -97,45 +111,50 @@ function App() {
   })
 
   return (
-    <div className="min-h-screen bg-[#f8f6f2] text-slate-900">
+    <div className={`${darkMode ? 'dark' : ''}`}>
       
-      <div className="flex">
+      <div className="min-h-screen bg-[#f8f6f2] text-slate-900 transition dark:bg-[#0f172a] dark:text-white">
         
-        <Sidebar
-          activeFilter={activeFilter}
-          setActiveFilter={setActiveFilter}
-          sidebarOpen={sidebarOpen}
-          setSidebarOpen={setSidebarOpen}
-        />
-
-        <main className="flex-1 p-5 lg:p-10">
+        <div className="flex">
           
-          <Header
-            searchTerm={searchTerm}
-            setSearchTerm={setSearchTerm}
+          <Sidebar
+            activeFilter={activeFilter}
+            setActiveFilter={setActiveFilter}
+            sidebarOpen={sidebarOpen}
             setSidebarOpen={setSidebarOpen}
+            darkMode={darkMode}
+            setDarkMode={setDarkMode}
           />
 
-          <AddSnippetForm addSnippet={addSnippet} />
+          <main className="flex-1 p-5 lg:p-10">
+            
+            <Header
+              searchTerm={searchTerm}
+              setSearchTerm={setSearchTerm}
+              setSidebarOpen={setSidebarOpen}
+            />
 
-          <SnippetsGrid
-            snippets={filteredSnippets}
-            deleteSnippet={deleteSnippet}
-            toggleFavorite={toggleFavorite}
-            openEditModal={setEditingSnippet}
+            <AddSnippetForm addSnippet={addSnippet} />
+
+            <SnippetsGrid
+              snippets={filteredSnippets}
+              deleteSnippet={deleteSnippet}
+              toggleFavorite={toggleFavorite}
+              openEditModal={setEditingSnippet}
+            />
+
+          </main>
+        </div>
+
+        {editingSnippet && (
+          <EditSnippetModal
+            snippet={editingSnippet}
+            closeModal={() => setEditingSnippet(null)}
+            updateSnippet={updateSnippet}
           />
+        )}
 
-        </main>
       </div>
-
-      {editingSnippet && (
-        <EditSnippetModal
-          snippet={editingSnippet}
-          closeModal={() => setEditingSnippet(null)}
-          updateSnippet={updateSnippet}
-        />
-      )}
-
     </div>
   )
 }
