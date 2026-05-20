@@ -1,5 +1,7 @@
 import { useState } from 'react'
 
+import toast from 'react-hot-toast'
+
 function AddSnippetForm({ addSnippet }) {
   const [title, setTitle] = useState('')
   const [language, setLanguage] = useState('')
@@ -9,6 +11,8 @@ function AddSnippetForm({ addSnippet }) {
     e.preventDefault()
 
     if (!title || !language || !code) {
+      toast.error('Please fill all fields')
+
       return
     }
 
@@ -20,6 +24,8 @@ function AddSnippetForm({ addSnippet }) {
     }
 
     addSnippet(newSnippet)
+
+    toast.success('Snippet added successfully')
 
     setTitle('')
     setLanguage('')

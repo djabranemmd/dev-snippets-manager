@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
 
+import toast from 'react-hot-toast'
+
 function EditSnippetModal({
   snippet,
   closeModal,
@@ -28,6 +30,8 @@ function EditSnippetModal({
     }
 
     updateSnippet(updatedSnippet)
+
+    toast.success('Snippet updated successfully')
 
     closeModal()
   }

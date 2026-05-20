@@ -1,5 +1,7 @@
 import { useState } from 'react'
 
+import toast from 'react-hot-toast'
+
 import SyntaxHighlighter from 'react-syntax-highlighter'
 
 import {
@@ -20,12 +22,14 @@ function SnippetCard({
 
       setCopied(true)
 
+      toast.success('Snippet copied')
+
       setTimeout(() => {
         setCopied(false)
       }, 2000)
 
     } catch (error) {
-      console.log('Copy failed:', error)
+      toast.error('Copy failed')
     }
   }
 
@@ -36,6 +40,8 @@ function SnippetCard({
 
     if (confirmDelete) {
       deleteSnippet(snippet.id)
+
+      toast.success('Snippet deleted')
     }
   }
 
