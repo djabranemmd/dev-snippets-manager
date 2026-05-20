@@ -10,6 +10,7 @@ function SnippetCard({
   snippet,
   deleteSnippet,
   toggleFavorite,
+  openEditModal,
 }) {
   const [copied, setCopied] = useState(false)
 
@@ -70,7 +71,14 @@ function SnippetCard({
 
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
+
+          <button
+            onClick={() => openEditModal(snippet)}
+            className="rounded-xl bg-amber-100 px-4 py-2 text-sm font-medium text-amber-700 transition hover:bg-amber-200"
+          >
+            Edit
+          </button>
 
           <button
             onClick={handleCopy}

@@ -4,6 +4,7 @@ import Sidebar from './components/Sidebar'
 import Header from './components/Header'
 import SnippetsGrid from './components/SnippetsGrid'
 import AddSnippetForm from './components/AddSnippetForm'
+import EditSnippetModal from './components/EditSnippetModal'
 
 import snippetsData from './data/snippets'
 
@@ -19,6 +20,8 @@ function App() {
   const [searchTerm, setSearchTerm] = useState('')
 
   const [activeFilter, setActiveFilter] = useState('all')
+
+  const [editingSnippet, setEditingSnippet] = useState(null)
 
   useEffect(() => {
     localStorage.setItem(
@@ -52,6 +55,18 @@ function App() {
           ...snippet,
           isFavorite: !snippet.isFavorite,
         }
+      }
+
+      return snippet
+    })
+
+    setSnippets(updatedSnippets)
+  }
+
+  const updateSnippet = (updatedSnippet) => {
+    const updatedSnippets = snippets.map((snippet) => {
+      if (snippet.id === updatedSnippet.id) {
+        return updatedSnippet
       }
 
       return snippet
@@ -99,10 +114,20 @@ function App() {
             snippets={filteredSnippets}
             deleteSnippet={deleteSnippet}
             toggleFavorite={toggleFavorite}
+            openEditModal={setEditingSnippet}
           />
 
         </main>
       </div>
+
+      {editingSnippet && (
+        <EditSnippetModal
+          snippet={editingSnippet}
+          closeModal={() => setEditingSnippet(null)}
+          updateSnippet={updateSnippet}
+        />
+      )}
+
     </div>
   )
 }

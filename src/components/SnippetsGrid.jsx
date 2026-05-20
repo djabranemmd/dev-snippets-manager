@@ -4,6 +4,7 @@ function SnippetsGrid({
   snippets,
   deleteSnippet,
   toggleFavorite,
+  openEditModal,
 }) {
   if (snippets.length === 0) {
     return (
@@ -29,6 +30,7 @@ function SnippetsGrid({
           snippet={snippet}
           deleteSnippet={deleteSnippet}
           toggleFavorite={toggleFavorite}
+          openEditModal={openEditModal}
         />
       ))}
     </div>
