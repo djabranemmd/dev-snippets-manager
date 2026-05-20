@@ -1,8 +1,13 @@
-function Header({
-  searchTerm,
-  setSearchTerm,
-  setSidebarOpen,
-}) {
+import { forwardRef } from 'react'
+
+const Header = forwardRef(function Header(
+  {
+    searchTerm,
+    setSearchTerm,
+    setSidebarOpen,
+  },
+  ref
+) {
   return (
     <header className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
       
@@ -30,6 +35,7 @@ function Header({
       <div className="w-full lg:w-[350px]">
         
         <input
+          ref={ref}
           type="text"
           placeholder="Search snippets..."
           value={searchTerm}
@@ -40,6 +46,6 @@ function Header({
       </div>
     </header>
   )
-}
+})
 
 export default Header

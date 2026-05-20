@@ -1,8 +1,16 @@
-import { useState } from 'react'
+import {
+  forwardRef,
+  useState,
+} from 'react'
 
 import toast from 'react-hot-toast'
 
-function AddSnippetForm({ addSnippet }) {
+const AddSnippetForm = forwardRef(function AddSnippetForm(
+  {
+    addSnippet,
+  },
+  ref
+) {
   const [title, setTitle] = useState('')
   const [language, setLanguage] = useState('')
   const [code, setCode] = useState('')
@@ -39,13 +47,16 @@ function AddSnippetForm({ addSnippet }) {
   }
 
   return (
-    <div className="mt-10 rounded-3xl border border-slate-200 bg-white p-8 shadow-sm">
+    <div
+      ref={ref}
+      className="mt-10 rounded-3xl border border-slate-200 bg-white p-8 shadow-sm dark:border-slate-800 dark:bg-[#111827]"
+    >
       
-      <h2 className="text-2xl font-bold text-slate-900">
+      <h2 className="text-2xl font-bold text-slate-900 dark:text-white">
         Add New Snippet
       </h2>
 
-      <p className="mt-2 text-slate-500">
+      <p className="mt-2 text-slate-500 dark:text-slate-400">
         Store useful snippets and access them anytime.
       </p>
 
@@ -55,7 +66,7 @@ function AddSnippetForm({ addSnippet }) {
       >
 
         <div>
-          <label className="mb-2 block text-sm font-medium text-slate-700">
+          <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
             Snippet Title
           </label>
 
@@ -64,19 +75,19 @@ function AddSnippetForm({ addSnippet }) {
             placeholder="Example: Fetch API"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className="w-full rounded-2xl border border-slate-200 bg-[#fcfbf8] px-5 py-4 outline-none transition focus:border-sky-400 focus:ring-4 focus:ring-sky-100"
+            className="w-full rounded-2xl border border-slate-200 bg-[#fcfbf8] px-5 py-4 outline-none transition focus:border-sky-400 focus:ring-4 focus:ring-sky-100 dark:border-slate-700 dark:bg-slate-800 dark:text-white"
           />
         </div>
 
         <div>
-          <label className="mb-2 block text-sm font-medium text-slate-700">
+          <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
             Language
           </label>
 
           <select
             value={language}
             onChange={(e) => setLanguage(e.target.value)}
-            className="w-full rounded-2xl border border-slate-200 bg-[#fcfbf8] px-5 py-4 outline-none transition focus:border-sky-400 focus:ring-4 focus:ring-sky-100"
+            className="w-full rounded-2xl border border-slate-200 bg-[#fcfbf8] px-5 py-4 outline-none transition focus:border-sky-400 focus:ring-4 focus:ring-sky-100 dark:border-slate-700 dark:bg-slate-800 dark:text-white"
           >
             <option value="">Select Language</option>
             <option value="JavaScript">JavaScript</option>
@@ -89,7 +100,7 @@ function AddSnippetForm({ addSnippet }) {
         </div>
 
         <div>
-          <label className="mb-2 block text-sm font-medium text-slate-700">
+          <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
             Tags
           </label>
 
@@ -98,12 +109,12 @@ function AddSnippetForm({ addSnippet }) {
             placeholder="Example: api, frontend, async"
             value={tags}
             onChange={(e) => setTags(e.target.value)}
-            className="w-full rounded-2xl border border-slate-200 bg-[#fcfbf8] px-5 py-4 outline-none transition focus:border-sky-400 focus:ring-4 focus:ring-sky-100"
+            className="w-full rounded-2xl border border-slate-200 bg-[#fcfbf8] px-5 py-4 outline-none transition focus:border-sky-400 focus:ring-4 focus:ring-sky-100 dark:border-slate-700 dark:bg-slate-800 dark:text-white"
           />
         </div>
 
         <div>
-          <label className="mb-2 block text-sm font-medium text-slate-700">
+          <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
             Code
           </label>
 
@@ -112,7 +123,7 @@ function AddSnippetForm({ addSnippet }) {
             placeholder="Write your code snippet here..."
             value={code}
             onChange={(e) => setCode(e.target.value)}
-            className="w-full rounded-2xl border border-slate-200 bg-[#fcfbf8] px-5 py-4 font-mono outline-none transition focus:border-sky-400 focus:ring-4 focus:ring-sky-100"
+            className="w-full rounded-2xl border border-slate-200 bg-[#fcfbf8] px-5 py-4 font-mono outline-none transition focus:border-sky-400 focus:ring-4 focus:ring-sky-100 dark:border-slate-700 dark:bg-slate-800 dark:text-white"
           />
         </div>
 
@@ -126,6 +137,6 @@ function AddSnippetForm({ addSnippet }) {
       </form>
     </div>
   )
-}
+})
 
 export default AddSnippetForm

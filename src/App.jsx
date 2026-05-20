@@ -1,4 +1,8 @@
-import { useEffect, useState } from 'react'
+import {
+  useEffect,
+  useRef,
+  useState,
+} from 'react'
 
 import Sidebar from './components/Sidebar'
 import Header from './components/Header'
@@ -30,6 +34,10 @@ function App() {
     return localStorage.getItem('theme') === 'dark'
   })
 
+  const searchInputRef = useRef(null)
+
+  const addFormRef = useRef(null)
+
   useEffect(() => {
     localStorage.setItem(
       'snippets',
@@ -49,6 +57,40 @@ function App() {
       localStorage.setItem('theme', 'light')
     }
   }, [darkMode])
+
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.ctrlKey && event.key === 'k') {
+        event.preventDefault()
+
+        searchInputRef.current?.focus()
+      }
+
+      if (event.ctrlKey && event.key === 'n') {
+        event.preventDefault()
+
+        addFormRef.current?.scrollIntoView({
+          behavior: 'smooth',
+        })
+      }
+
+      if (event.key === 'Escape') {
+        setEditingSnippet(null)
+      }
+    }
+
+    window.addEventListener(
+      'keydown',
+      handleKeyDown
+    )
+
+    return () => {
+      window.removeEventListener(
+        'keydown',
+        handleKeyDown
+      )
+    }
+  }, [])
 
   const addSnippet = (newSnippet) => {
     setSnippets([
@@ -137,6 +179,7 @@ function App() {
           <main className="flex-1 p-5 lg:p-10">
             
             <Header
+              ref={searchInputRef}
               searchTerm={searchTerm}
               setSearchTerm={setSearchTerm}
               setSidebarOpen={setSidebarOpen}
@@ -147,7 +190,10 @@ function App() {
               importSnippets={importSnippets}
             />
 
-            <AddSnippetForm addSnippet={addSnippet} />
+            <AddSnippetForm
+              ref={addFormRef}
+              addSnippet={addSnippet}
+            />
 
             <SnippetsGrid
               snippets={filteredSnippets}
