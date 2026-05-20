@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import Sidebar from './components/Sidebar'
 import Header from './components/Header'
@@ -8,12 +8,33 @@ import AddSnippetForm from './components/AddSnippetForm'
 import snippetsData from './data/snippets'
 
 function App() {
-  const [snippets, setSnippets] = useState(snippetsData)
+  const [snippets, setSnippets] = useState(() => {
+    const savedSnippets = localStorage.getItem('snippets')
+
+    return savedSnippets
+      ? JSON.parse(savedSnippets)
+      : snippetsData
+  })
 
   const [searchTerm, setSearchTerm] = useState('')
 
+  const [activeFilter, setActiveFilter] = useState('all')
+
+  useEffect(() => {
+    localStorage.setItem(
+      'snippets',
+      JSON.stringify(snippets)
+    )
+  }, [snippets])
+
   const addSnippet = (newSnippet) => {
-    setSnippets([newSnippet, ...snippets])
+    setSnippets([
+      {
+        ...newSnippet,
+        isFavorite: false,
+      },
+      ...snippets,
+    ])
   }
 
   const deleteSnippet = (id) => {
@@ -24,14 +45,35 @@ function App() {
     setSnippets(updatedSnippets)
   }
 
+  const toggleFavorite = (id) => {
+    const updatedSnippets = snippets.map((snippet) => {
+      if (snippet.id === id) {
+        return {
+          ...snippet,
+          isFavorite: !snippet.isFavorite,
+        }
+      }
+
+      return snippet
+    })
+
+    setSnippets(updatedSnippets)
+  }
+
   const filteredSnippets = snippets.filter((snippet) => {
     const search = searchTerm.toLowerCase()
 
-    return (
+    const matchesSearch =
       snippet.title.toLowerCase().includes(search) ||
       snippet.language.toLowerCase().includes(search) ||
       snippet.code.toLowerCase().includes(search)
-    )
+
+    const matchesFilter =
+      activeFilter === 'all'
+        ? true
+        : snippet.isFavorite
+
+    return matchesSearch && matchesFilter
   })
 
   return (
@@ -39,7 +81,10 @@ function App() {
       
       <div className="flex">
         
-        <Sidebar />
+        <Sidebar
+          activeFilter={activeFilter}
+          setActiveFilter={setActiveFilter}
+        />
 
         <main className="flex-1 p-10">
           
@@ -53,6 +98,7 @@ function App() {
           <SnippetsGrid
             snippets={filteredSnippets}
             deleteSnippet={deleteSnippet}
+            toggleFavorite={toggleFavorite}
           />
 
         </main>

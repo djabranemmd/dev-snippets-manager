@@ -1,4 +1,7 @@
-function Sidebar() {
+function Sidebar({
+  activeFilter,
+  setActiveFilter,
+}) {
   return (
     <aside className="min-h-screen w-[280px] border-r border-slate-200 bg-white p-7">
       
@@ -16,24 +19,26 @@ function Sidebar() {
 
       <div className="mt-10 space-y-2">
 
-        <button className="w-full rounded-2xl bg-slate-100 px-4 py-3 text-left font-medium text-slate-900 transition hover:bg-slate-200">
+        <button
+          onClick={() => setActiveFilter('all')}
+          className={`w-full rounded-2xl px-4 py-3 text-left font-medium transition ${
+            activeFilter === 'all'
+              ? 'bg-slate-100 text-slate-900'
+              : 'text-slate-500 hover:bg-slate-100 hover:text-slate-900'
+          }`}
+        >
           All Snippets
         </button>
 
-        <button className="w-full rounded-2xl px-4 py-3 text-left text-slate-500 transition hover:bg-slate-100 hover:text-slate-900">
+        <button
+          onClick={() => setActiveFilter('favorites')}
+          className={`w-full rounded-2xl px-4 py-3 text-left font-medium transition ${
+            activeFilter === 'favorites'
+              ? 'bg-slate-100 text-slate-900'
+              : 'text-slate-500 hover:bg-slate-100 hover:text-slate-900'
+          }`}
+        >
           Favorites
-        </button>
-
-        <button className="w-full rounded-2xl px-4 py-3 text-left text-slate-500 transition hover:bg-slate-100 hover:text-slate-900">
-          JavaScript
-        </button>
-
-        <button className="w-full rounded-2xl px-4 py-3 text-left text-slate-500 transition hover:bg-slate-100 hover:text-slate-900">
-          React
-        </button>
-
-        <button className="w-full rounded-2xl px-4 py-3 text-left text-slate-500 transition hover:bg-slate-100 hover:text-slate-900">
-          CSS
         </button>
 
       </div>
