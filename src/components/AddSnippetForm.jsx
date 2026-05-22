@@ -1,142 +1,79 @@
-import {
-  forwardRef,
-  useState,
-} from 'react'
+import { useState } from "react";
 
-import toast from 'react-hot-toast'
-
-const AddSnippetForm = forwardRef(function AddSnippetForm(
-  {
-    addSnippet,
-  },
-  ref
-) {
-  const [title, setTitle] = useState('')
-  const [language, setLanguage] = useState('')
-  const [code, setCode] = useState('')
-  const [tags, setTags] = useState('')
+export default function AddSnippetForm({ addSnippet }) {
+  const [title, setTitle] = useState("");
+  const [language, setLanguage] = useState("");
+  const [code, setCode] = useState("");
+  const [tags, setTags] = useState("");
 
   const handleSubmit = (e) => {
-    e.preventDefault()
+    e.preventDefault();
 
-    if (!title || !language || !code) {
-      toast.error('Please fill all fields')
+    if (!title || !language || !code) return;
 
-      return
-    }
-
-    const newSnippet = {
+    addSnippet({
       id: Date.now(),
       title,
       language,
       code,
       tags: tags
-        .split(',')
+        .split(",")
         .map((tag) => tag.trim())
         .filter(Boolean),
-    }
+      favorite: false,
+    });
 
-    addSnippet(newSnippet)
-
-    toast.success('Snippet added successfully')
-
-    setTitle('')
-    setLanguage('')
-    setCode('')
-    setTags('')
-  }
+    setTitle("");
+    setLanguage("");
+    setCode("");
+    setTags("");
+  };
 
   return (
-    <div
-      ref={ref}
-      className="mt-10 rounded-3xl border border-slate-200 bg-white p-8 shadow-sm dark:border-slate-800 dark:bg-[#111827]"
-    >
-      
-      <h2 className="text-2xl font-bold text-slate-900 dark:text-white">
-        Add New Snippet
-      </h2>
+    <form onSubmit={handleSubmit} className="snippet-form">
+      <div className="form-group">
+        <label>Title</label>
+        <input
+          type="text"
+          placeholder="Fetch API Example"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+        />
+      </div>
 
-      <p className="mt-2 text-slate-500 dark:text-slate-400">
-        Store useful snippets and access them anytime.
-      </p>
+      <div className="form-group">
+        <label>Language</label>
+        <input
+          type="text"
+          placeholder="JavaScript"
+          value={language}
+          onChange={(e) => setLanguage(e.target.value)}
+        />
+      </div>
 
-      <form
-        onSubmit={handleSubmit}
-        className="mt-8 space-y-6"
-      >
+      <div className="form-group">
+        <label>Code</label>
+        <textarea
+          rows="6"
+          placeholder="Paste your code..."
+          value={code}
+          onChange={(e) => setCode(e.target.value)}
+        />
+      </div>
 
-        <div>
-          <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
-            Snippet Title
-          </label>
+      <div className="form-group">
+        <label>Tags</label>
+        <input
+          type="text"
+          placeholder="api, fetch, async"
+          value={tags}
+          onChange={(e) => setTags(e.target.value)}
+        />
+      </div>
 
-          <input
-            type="text"
-            placeholder="Example: Fetch API"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            className="w-full rounded-2xl border border-slate-200 bg-[#fcfbf8] px-5 py-4 outline-none transition focus:border-sky-400 focus:ring-4 focus:ring-sky-100 dark:border-slate-700 dark:bg-slate-800 dark:text-white"
-          />
-        </div>
-
-        <div>
-          <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
-            Language
-          </label>
-
-          <select
-            value={language}
-            onChange={(e) => setLanguage(e.target.value)}
-            className="w-full rounded-2xl border border-slate-200 bg-[#fcfbf8] px-5 py-4 outline-none transition focus:border-sky-400 focus:ring-4 focus:ring-sky-100 dark:border-slate-700 dark:bg-slate-800 dark:text-white"
-          >
-            <option value="">Select Language</option>
-            <option value="JavaScript">JavaScript</option>
-            <option value="React">React</option>
-            <option value="CSS">CSS</option>
-            <option value="HTML">HTML</option>
-            <option value="SQL">SQL</option>
-            <option value="Bash">Bash</option>
-          </select>
-        </div>
-
-        <div>
-          <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
-            Tags
-          </label>
-
-          <input
-            type="text"
-            placeholder="Example: api, frontend, async"
-            value={tags}
-            onChange={(e) => setTags(e.target.value)}
-            className="w-full rounded-2xl border border-slate-200 bg-[#fcfbf8] px-5 py-4 outline-none transition focus:border-sky-400 focus:ring-4 focus:ring-sky-100 dark:border-slate-700 dark:bg-slate-800 dark:text-white"
-          />
-        </div>
-
-        <div>
-          <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
-            Code
-          </label>
-
-          <textarea
-            rows="8"
-            placeholder="Write your code snippet here..."
-            value={code}
-            onChange={(e) => setCode(e.target.value)}
-            className="w-full rounded-2xl border border-slate-200 bg-[#fcfbf8] px-5 py-4 font-mono outline-none transition focus:border-sky-400 focus:ring-4 focus:ring-sky-100 dark:border-slate-700 dark:bg-slate-800 dark:text-white"
-          />
-        </div>
-
-        <button
-          type="submit"
-          className="rounded-2xl bg-sky-500 px-6 py-4 font-semibold text-white transition hover:bg-sky-400"
-        >
-          Save Snippet
-        </button>
-
-      </form>
-    </div>
-  )
-})
-
-export default AddSnippetForm
+      <button type="submit" className="primary-btn">
+        Add Snippet
+      </button>
+    </form>
+  );
+}

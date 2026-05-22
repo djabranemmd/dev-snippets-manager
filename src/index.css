@@ -1,4 +1,6 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 * {
   margin: 0;
@@ -6,13 +8,305 @@
   box-sizing: border-box;
 }
 
-html,
-body,
-#root {
-  min-height: 100vh;
+body {
+  background: #f8fafc;
+  color: #0f172a;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
-body {
-  font-family: Arial, Helvetica, sans-serif;
-  background: #f8f6f2;
+body.dark {
+  background: #0f172a;
+  color: white;
+}
+
+button {
+  border: none;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+input,
+textarea {
+  width: 100%;
+  border: 1px solid #dbeafe;
+  border-radius: 12px;
+  padding: 12px;
+  background: white;
+  color: #0f172a;
+  outline: none;
+}
+
+body.dark input,
+body.dark textarea {
+  background: #1e293b;
+  color: white;
+  border-color: #334155;
+}
+
+.main-content {
+  flex: 1;
+  padding: 30px;
+}
+
+.sidebar {
+  width: 260px;
+  min-height: 100vh;
+  background: white;
+  border-right: 1px solid #e2e8f0;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+}
+
+body.dark .sidebar {
+  background: #111827;
+  border-color: #1e293b;
+}
+
+.sidebar-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo-box {
+  width: 45px;
+  height: 45px;
+  border-radius: 14px;
+  background: #0ea5e9;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+.sidebar-logo p {
+  color: #64748b;
+  font-size: 14px;
+}
+
+.sidebar-menu {
+  margin-top: 40px;
+}
+
+.menu-btn {
+  width: 100%;
+  padding: 14px;
+  border-radius: 12px;
+  background: #f1f5f9;
+}
+
+.active {
+  background: #0ea5e9;
+  color: white;
+}
+
+.theme-btn {
+  margin-top: auto;
+  padding: 14px;
+  border-radius: 12px;
+  background: #0ea5e9;
+  color: white;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  align-items: center;
+}
+
+.header p {
+  color: #64748b;
+  margin-top: 5px;
+}
+
+.search-input {
+  max-width: 320px;
+}
+
+.form-section {
+  margin-top: 30px;
+}
+
+.snippet-form {
+  margin-top: 20px;
+  background: white;
+  padding: 24px;
+  border-radius: 20px;
+}
+
+body.dark .snippet-form {
+  background: #111827;
+}
+
+.form-group {
+  margin-bottom: 18px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.primary-btn {
+  background: #0ea5e9;
+  color: white;
+  padding: 14px 20px;
+  border-radius: 12px;
+}
+
+.secondary-btn {
+  background: #e2e8f0;
+  color: #0f172a;
+  padding: 14px 20px;
+  border-radius: 12px;
+}
+
+.snippets-grid {
+  margin-top: 40px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill,minmax(320px,1fr));
+  gap: 24px;
+}
+
+.snippet-card {
+  background: white;
+  border-radius: 20px;
+  padding: 24px;
+}
+
+body.dark .snippet-card {
+  background: #111827;
+}
+
+.snippet-top {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.snippet-top span {
+  color: #64748b;
+  font-size: 14px;
+}
+
+pre {
+  background: #f1f5f9;
+  padding: 16px;
+  border-radius: 16px;
+  overflow-x: auto;
+}
+
+body.dark pre {
+  background: #1e293b;
+}
+
+.tags-container {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 16px;
+}
+
+.tag {
+  background: #e0f2fe;
+  color: #0284c7;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 13px;
+}
+
+.card-actions {
+  margin-top: 20px;
+  display: flex;
+  gap: 10px;
+}
+
+.action-btn {
+  padding: 10px 14px;
+  border-radius: 10px;
+  color: white;
+}
+
+.copy-btn {
+  background: #0ea5e9;
+}
+
+.edit-btn {
+  background: #f59e0b;
+}
+
+.delete-btn {
+  background: #ef4444;
+}
+
+.favorite-btn {
+  background: #8b5cf6;
+}
+
+.empty-state {
+  margin-top: 60px;
+  text-align: center;
+}
+
+.empty-state h2 {
+  margin-bottom: 10px;
+}
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  padding: 20px;
+}
+
+.modal-container {
+  width: 100%;
+  max-width: 600px;
+
+  background: white;
+  border-radius: 20px;
+  padding: 24px;
+}
+
+body.dark .modal-container {
+  background: #111827;
+}
+
+.modal-container h2 {
+  margin-bottom: 20px;
+}
+
+.modal-container input,
+.modal-container textarea {
+  margin-bottom: 14px;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    display: none;
+  }
+
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .search-input {
+    max-width: 100%;
+  }
 }

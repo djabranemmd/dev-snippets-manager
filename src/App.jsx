@@ -1,221 +1,166 @@
-import {
-  useEffect,
-  useRef,
-  useState,
-} from 'react'
+import { useEffect, useState } from "react";
 
-import Sidebar from './components/Sidebar'
-import Header from './components/Header'
-import SnippetsGrid from './components/SnippetsGrid'
-import AddSnippetForm from './components/AddSnippetForm'
-import EditSnippetModal from './components/EditSnippetModal'
-import DataActions from './components/DataActions'
+import "./App.css";
 
-import snippetsData from './data/snippets'
+import Sidebar from "./components/Sidebar";
+import Header from "./components/Header";
+import SnippetForm from "./components/SnippetForm";
+import SnippetsGrid from "./components/SnippetsGrid";
+import EditSnippetModal from "./components/EditSnippetModal";
+
+import initialSnippets from "./data/Snippets";
 
 function App() {
-  const [snippets, setSnippets] = useState(() => {
-    const savedSnippets = localStorage.getItem('snippets')
+  const [darkMode, setDarkMode] =
+    useState(false);
 
-    return savedSnippets
-      ? JSON.parse(savedSnippets)
-      : snippetsData
-  })
+  const [activeFilter, setActiveFilter] =
+    useState("all");
 
-  const [searchTerm, setSearchTerm] = useState('')
+  const [snippets, setSnippets] =
+    useState(() => {
+      const saved =
+        localStorage.getItem("snippets");
 
-  const [activeFilter, setActiveFilter] = useState('all')
+      return saved
+        ? JSON.parse(saved)
+        : initialSnippets;
+    });
 
-  const [editingSnippet, setEditingSnippet] = useState(null)
+  const [search, setSearch] =
+    useState("");
 
-  const [sidebarOpen, setSidebarOpen] = useState(false)
-
-  const [darkMode, setDarkMode] = useState(() => {
-    return localStorage.getItem('theme') === 'dark'
-  })
-
-  const searchInputRef = useRef(null)
-
-  const addFormRef = useRef(null)
+  const [editingSnippet, setEditingSnippet] =
+    useState(null);
 
   useEffect(() => {
     localStorage.setItem(
-      'snippets',
+      "snippets",
       JSON.stringify(snippets)
-    )
-  }, [snippets])
+    );
+  }, [snippets]);
 
   useEffect(() => {
-    if (darkMode) {
-      document.documentElement.classList.add('dark')
+    document.body.classList.toggle(
+      "dark",
+      darkMode
+    );
+  }, [darkMode]);
 
-      localStorage.setItem('theme', 'dark')
-
-    } else {
-      document.documentElement.classList.remove('dark')
-
-      localStorage.setItem('theme', 'light')
-    }
-  }, [darkMode])
-
-  useEffect(() => {
-    const handleKeyDown = (event) => {
-      if (event.ctrlKey && event.key === 'k') {
-        event.preventDefault()
-
-        searchInputRef.current?.focus()
-      }
-
-      if (event.ctrlKey && event.key === 'n') {
-        event.preventDefault()
-
-        addFormRef.current?.scrollIntoView({
-          behavior: 'smooth',
-        })
-      }
-
-      if (event.key === 'Escape') {
-        setEditingSnippet(null)
-      }
-    }
-
-    window.addEventListener(
-      'keydown',
-      handleKeyDown
-    )
-
-    return () => {
-      window.removeEventListener(
-        'keydown',
-        handleKeyDown
-      )
-    }
-  }, [])
-
-  const addSnippet = (newSnippet) => {
-    setSnippets([
-      {
-        ...newSnippet,
-        isFavorite: false,
-      },
-      ...snippets,
-    ])
-  }
+  const addSnippet = (snippet) => {
+    setSnippets([snippet, ...snippets]);
+  };
 
   const deleteSnippet = (id) => {
-    const updatedSnippets = snippets.filter(
-      (snippet) => snippet.id !== id
-    )
-
-    setSnippets(updatedSnippets)
-  }
+    setSnippets(
+      snippets.filter((s) => s.id !== id)
+    );
+  };
 
   const toggleFavorite = (id) => {
-    const updatedSnippets = snippets.map((snippet) => {
-      if (snippet.id === id) {
-        return {
-          ...snippet,
-          isFavorite: !snippet.isFavorite,
-        }
-      }
-
-      return snippet
-    })
-
-    setSnippets(updatedSnippets)
-  }
-
-  const updateSnippet = (updatedSnippet) => {
-    const updatedSnippets = snippets.map((snippet) => {
-      if (snippet.id === updatedSnippet.id) {
-        return updatedSnippet
-      }
-
-      return snippet
-    })
-
-    setSnippets(updatedSnippets)
-  }
-
-  const importSnippets = (importedSnippets) => {
-    setSnippets(importedSnippets)
-  }
-
-  const filteredSnippets = snippets.filter((snippet) => {
-    const search = searchTerm.toLowerCase()
-
-    const matchesSearch =
-      snippet.title.toLowerCase().includes(search) ||
-      snippet.language.toLowerCase().includes(search) ||
-      snippet.code.toLowerCase().includes(search) ||
-      snippet.tags?.some((tag) =>
-        tag.toLowerCase().includes(search)
+    setSnippets(
+      snippets.map((s) =>
+        s.id === id
+          ? {
+              ...s,
+              favorite: !s.favorite,
+            }
+          : s
       )
+    );
+  };
 
-    const matchesFilter =
-      activeFilter === 'all'
-        ? true
-        : snippet.isFavorite
+  const updateSnippet = (
+    updatedSnippet
+  ) => {
+    setSnippets(
+      snippets.map((s) =>
+        s.id === updatedSnippet.id
+          ? updatedSnippet
+          : s
+      )
+    );
 
-    return matchesSearch && matchesFilter
-  })
+    setEditingSnippet(null);
+  };
+
+  let filteredSnippets =
+    snippets.filter((snippet) => {
+      const q = search.toLowerCase();
+
+      return (
+        snippet.title
+          ?.toLowerCase()
+          .includes(q) ||
+
+        snippet.language
+          ?.toLowerCase()
+          .includes(q) ||
+
+        snippet.code
+          ?.toLowerCase()
+          .includes(q) ||
+
+        (snippet.tags || []).some(
+          (tag) =>
+            tag
+              .toLowerCase()
+              .includes(q)
+        )
+      );
+    });
+
+  if (activeFilter === "favorites") {
+    filteredSnippets =
+      filteredSnippets.filter(
+        (snippet) => snippet.favorite
+      );
+  }
 
   return (
-    <div className={`${darkMode ? 'dark' : ''}`}>
-      
-      <div className="min-h-screen bg-[#f8f6f2] text-slate-900 transition dark:bg-[#0f172a] dark:text-white">
-        
-        <div className="flex">
-          
-          <Sidebar
-            activeFilter={activeFilter}
-            setActiveFilter={setActiveFilter}
-            sidebarOpen={sidebarOpen}
-            setSidebarOpen={setSidebarOpen}
-            darkMode={darkMode}
-            setDarkMode={setDarkMode}
-          />
+    <div className="app-container">
 
-          <main className="flex-1 p-5 lg:p-10">
-            
-            <Header
-              ref={searchInputRef}
-              searchTerm={searchTerm}
-              setSearchTerm={setSearchTerm}
-              setSidebarOpen={setSidebarOpen}
-            />
+      <Sidebar
+        darkMode={darkMode}
+        setDarkMode={setDarkMode}
+        activeFilter={activeFilter}
+        setActiveFilter={
+          setActiveFilter
+        }
+      />
 
-            <DataActions
-              snippets={snippets}
-              importSnippets={importSnippets}
-            />
+      <main className="main-content">
 
-            <AddSnippetForm
-              ref={addFormRef}
-              addSnippet={addSnippet}
-            />
+        <Header
+          search={search}
+          setSearch={setSearch}
+        />
 
-            <SnippetsGrid
-              snippets={filteredSnippets}
-              deleteSnippet={deleteSnippet}
-              toggleFavorite={toggleFavorite}
-              openEditModal={setEditingSnippet}
-            />
+        <SnippetForm
+          addSnippet={addSnippet}
+        />
 
-          </main>
-        </div>
+        <SnippetsGrid
+          snippets={filteredSnippets}
+          deleteSnippet={deleteSnippet}
+          toggleFavorite={toggleFavorite}
+          setEditingSnippet={
+            setEditingSnippet
+          }
+        />
 
-        {editingSnippet && (
-          <EditSnippetModal
-            snippet={editingSnippet}
-            closeModal={() => setEditingSnippet(null)}
-            updateSnippet={updateSnippet}
-          />
-        )}
+      </main>
 
-      </div>
+      <EditSnippetModal
+        snippet={editingSnippet}
+        onClose={() =>
+          setEditingSnippet(null)
+        }
+        onSave={updateSnippet}
+      />
+
     </div>
-  )
+  );
 }
 
-export default App
+export default App;

@@ -1,7 +1,8 @@
 export default function EmptyState() {
   return (
-    <div className="mt-10 p-10 text-center border border-dashed rounded-2xl text-slate-500 dark:border-slate-700">
-      No Snippets Found 🚀
+    <div className="empty-state">
+      <h2>No Snippets Found</h2>
+      <p>Start adding your first snippet 🚀</p>
     </div>
   );
 }
