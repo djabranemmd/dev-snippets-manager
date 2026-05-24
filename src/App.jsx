@@ -1,4 +1,8 @@
-import { useEffect, useState } from "react";
+import {
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 
 import "./App.css";
 
@@ -8,9 +12,18 @@ import SnippetForm from "./components/SnippetForm";
 import SnippetsGrid from "./components/SnippetsGrid";
 import EditSnippetModal from "./components/EditSnippetModal";
 
-import initialSnippets from "./data/Snippets";
+import { useAuth } from "./context/AuthProvider";
+
+import {
+  getUserSnippets,
+  createSnippet,
+  removeSnippet,
+  editSnippet,
+} from "./firebase/snippetsService";
 
 function App() {
+  const { user } = useAuth();
+
   const [darkMode, setDarkMode] =
     useState(false);
 
@@ -18,14 +31,7 @@ function App() {
     useState("all");
 
   const [snippets, setSnippets] =
-    useState(() => {
-      const saved =
-        localStorage.getItem("snippets");
-
-      return saved
-        ? JSON.parse(saved)
-        : initialSnippets;
-    });
+    useState([]);
 
   const [search, setSearch] =
     useState("");
@@ -33,12 +39,25 @@ function App() {
   const [editingSnippet, setEditingSnippet] =
     useState(null);
 
+  const [loading, setLoading] =
+    useState(true);
+
   useEffect(() => {
-    localStorage.setItem(
-      "snippets",
-      JSON.stringify(snippets)
-    );
-  }, [snippets]);
+    const loadSnippets = async () => {
+      if (!user) return;
+
+      setLoading(true);
+
+      const data =
+        await getUserSnippets(user.uid);
+
+      setSnippets(data);
+
+      setLoading(false);
+    };
+
+    loadSnippets();
+  }, [user]);
 
   useEffect(() => {
     document.body.classList.toggle(
@@ -47,34 +66,61 @@ function App() {
     );
   }, [darkMode]);
 
-  const addSnippet = (snippet) => {
-    setSnippets([snippet, ...snippets]);
+  const addSnippet = async (snippet) => {
+    const payload = {
+      ...snippet,
+      userId: user.uid,
+    };
+
+    const id = await createSnippet(
+      payload
+    );
+
+    setSnippets((prev) => [
+      { ...payload, id },
+      ...prev,
+    ]);
   };
 
-  const deleteSnippet = (id) => {
-    setSnippets(
-      snippets.filter((s) => s.id !== id)
+  const deleteSnippet = async (id) => {
+    await removeSnippet(id);
+
+    setSnippets((prev) =>
+      prev.filter((s) => s.id !== id)
     );
   };
 
-  const toggleFavorite = (id) => {
-    setSnippets(
-      snippets.map((s) =>
-        s.id === id
-          ? {
-              ...s,
-              favorite: !s.favorite,
-            }
-          : s
+  const toggleFavorite = async (id) => {
+    const target = snippets.find(
+      (s) => s.id === id
+    );
+
+    if (!target) return;
+
+    const updated = {
+      ...target,
+      favorite: !target.favorite,
+    };
+
+    await editSnippet(id, updated);
+
+    setSnippets((prev) =>
+      prev.map((s) =>
+        s.id === id ? updated : s
       )
     );
   };
 
-  const updateSnippet = (
+  const updateSnippet = async (
     updatedSnippet
   ) => {
-    setSnippets(
-      snippets.map((s) =>
+    await editSnippet(
+      updatedSnippet.id,
+      updatedSnippet
+    );
+
+    setSnippets((prev) =>
+      prev.map((s) =>
         s.id === updatedSnippet.id
           ? updatedSnippet
           : s
@@ -84,37 +130,64 @@ function App() {
     setEditingSnippet(null);
   };
 
-  let filteredSnippets =
-    snippets.filter((snippet) => {
-      const q = search.toLowerCase();
+  const filteredSnippets =
+    useMemo(() => {
+      let result = snippets.filter(
+        (snippet) => {
+          const q =
+            search.toLowerCase();
 
-      return (
-        snippet.title
-          ?.toLowerCase()
-          .includes(q) ||
+          return (
+            snippet.title
+              ?.toLowerCase()
+              .includes(q) ||
 
-        snippet.language
-          ?.toLowerCase()
-          .includes(q) ||
+            snippet.language
+              ?.toLowerCase()
+              .includes(q) ||
 
-        snippet.code
-          ?.toLowerCase()
-          .includes(q) ||
+            snippet.code
+              ?.toLowerCase()
+              .includes(q) ||
 
-        (snippet.tags || []).some(
-          (tag) =>
-            tag
-              .toLowerCase()
-              .includes(q)
-        )
+            (
+              snippet.tags || []
+            ).some((tag) =>
+              tag
+                .toLowerCase()
+                .includes(q)
+            )
+          );
+        }
       );
-    });
 
-  if (activeFilter === "favorites") {
-    filteredSnippets =
-      filteredSnippets.filter(
-        (snippet) => snippet.favorite
-      );
+      if (
+        activeFilter ===
+        "favorites"
+      ) {
+        result = result.filter(
+          (snippet) =>
+            snippet.favorite
+        );
+      }
+
+      return result;
+    }, [
+      snippets,
+      search,
+      activeFilter,
+    ]);
+
+  if (loading) {
+    return (
+      <div
+        style={{
+          padding: "40px",
+        }}
+      >
+        Loading...
+      </div>
+    );
   }
 
   return (
