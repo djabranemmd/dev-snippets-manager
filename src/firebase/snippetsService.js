@@ -16,7 +16,7 @@ const COLLECTION_NAME = "snippets";
 export async function getUserSnippets(userId) {
   const q = query(
     collection(db, COLLECTION_NAME),
-    where("userId", "==", userId),
+    where("userId", "==", userId)
   );
 
   const snapshot = await getDocs(q);
@@ -28,15 +28,38 @@ export async function getUserSnippets(userId) {
 }
 
 export async function createSnippet(snippet) {
-  const docRef = await addDoc(collection(db, COLLECTION_NAME), snippet);
+  const docRef = await addDoc(
+    collection(db, COLLECTION_NAME),
+    snippet
+  );
 
-  return docRef.id;
+  return {
+    id: docRef.id,
+    ...snippet,
+  };
+}
+
+export async function createManySnippets(snippets) {
+  const created = [];
+
+  for (const snippet of snippets) {
+    const item = await createSnippet(snippet);
+    created.push(item);
+  }
+
+  return created;
 }
 
 export async function removeSnippet(id) {
   await deleteDoc(doc(db, COLLECTION_NAME, id));
 }
 
-export async function editSnippet(id, updatedSnippet) {
-  await updateDoc(doc(db, COLLECTION_NAME, id), updatedSnippet);
+export async function editSnippet(
+  id,
+  updatedSnippet
+) {
+  await updateDoc(
+    doc(db, COLLECTION_NAME, id),
+    updatedSnippet
+  );
 }
