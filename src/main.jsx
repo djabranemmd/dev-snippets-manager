@@ -12,6 +12,10 @@ import App from "./App";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 
+import ProtectedRoute from "./components/ProtectedRoute";
+
+import { AuthProvider } from "./context/AuthProvider";
+
 import "./index.css";
 
 ReactDOM.createRoot(
@@ -19,28 +23,36 @@ ReactDOM.createRoot(
 ).render(
   <React.StrictMode>
 
-    <BrowserRouter>
+    <AuthProvider>
 
-      <Routes>
+      <BrowserRouter>
 
-        <Route
-          path="/"
-          element={<App />}
-        />
+        <Routes>
 
-        <Route
-          path="/login"
-          element={<Login />}
-        />
+          <Route
+            path="/"
+            element={
+              <ProtectedRoute>
+                <App />
+              </ProtectedRoute>
+            }
+          />
 
-        <Route
-          path="/register"
-          element={<Register />}
-        />
+          <Route
+            path="/login"
+            element={<Login />}
+          />
 
-      </Routes>
+          <Route
+            path="/register"
+            element={<Register />}
+          />
 
-    </BrowserRouter>
+        </Routes>
+
+      </BrowserRouter>
+
+    </AuthProvider>
 
   </React.StrictMode>
 );

@@ -1,9 +1,23 @@
+import {
+  signOut,
+} from "firebase/auth";
+
+import { auth } from "../firebase/firebase";
+
+import { useAuth } from "../context/AuthProvider";
+
 export default function Sidebar({
   darkMode,
   setDarkMode,
   activeFilter,
   setActiveFilter,
 }) {
+  const { user } = useAuth();
+
+  const handleLogout = async () => {
+    await signOut(auth);
+  };
+
   return (
     <aside className="sidebar">
 
@@ -50,16 +64,44 @@ export default function Sidebar({
 
       </div>
 
-      <button
-        className="theme-btn"
-        onClick={() =>
-          setDarkMode(!darkMode)
-        }
+      <div
+        style={{
+          marginTop: "auto",
+        }}
       >
-        {darkMode
-          ? "☀ Light Mode"
-          : "🌙 Dark Mode"}
-      </button>
+
+        <p
+          style={{
+            fontSize: "14px",
+            marginBottom: "12px",
+          }}
+        >
+          {user?.email}
+        </p>
+
+        <button
+          className="theme-btn"
+          onClick={() =>
+            setDarkMode(!darkMode)
+          }
+        >
+          {darkMode
+            ? "☀ Light Mode"
+            : "🌙 Dark Mode"}
+        </button>
+
+        <button
+          className="menu-btn"
+          onClick={handleLogout}
+          style={{
+            marginTop: "12px",
+            width: "100%",
+          }}
+        >
+          Logout
+        </button>
+
+      </div>
 
     </aside>
   );

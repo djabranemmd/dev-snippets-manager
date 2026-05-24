@@ -1,34 +1,24 @@
 import { initializeApp } from "firebase/app";
 
-import {
-  getAuth,
-} from "firebase/auth";
+import { getAuth } from "firebase/auth";
 
-import {
-  getFirestore,
-} from "firebase/firestore";
+import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBLhKv16PjGsl45pJDKvrP-AKhynUF-P8o",
 
-  authDomain:
-    "dev-snippets-manager.firebaseapp.com",
+  authDomain: "dev-snippets-manager.firebaseapp.com",
 
-  projectId:
-    "dev-snippets-manager",
+  projectId: "dev-snippets-manager",
 
-  storageBucket:
-    "dev-snippets-manager.firebasestorage.app",
+  storageBucket: "dev-snippets-manager.firebasestorage.app",
 
-  messagingSenderId:
-    "445019202822",
+  messagingSenderId: "445019202822",
 
-  appId:
-    "1:445019202822:web:84d3b72260d9a486a82a87",
+  appId: "1:445019202822:web:84d3b72260d9a486a82a87",
 };
 
-const app =
-  initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig);
 
 export const auth = getAuth(app);
 
