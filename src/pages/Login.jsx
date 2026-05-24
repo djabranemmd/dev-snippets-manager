@@ -4,17 +4,33 @@ import {
   signInWithEmailAndPassword,
 } from "firebase/auth";
 
+import {
+  Link,
+  useNavigate,
+} from "react-router-dom";
+
 import { auth } from "../firebase/firebase";
 
 export default function Login() {
+  const navigate = useNavigate();
+
   const [email, setEmail] =
     useState("");
 
   const [password, setPassword] =
     useState("");
 
+  const [error, setError] =
+    useState("");
+
+  const [loading, setLoading] =
+    useState(false);
+
   const handleLogin = async (e) => {
     e.preventDefault();
+
+    setError("");
+    setLoading(true);
 
     try {
       await signInWithEmailAndPassword(
@@ -23,10 +39,12 @@ export default function Login() {
         password
       );
 
-      alert("Login successful");
+      navigate("/");
 
     } catch (error) {
-      alert(error.message);
+      setError(error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -47,6 +65,7 @@ export default function Login() {
           onChange={(e) =>
             setEmail(e.target.value)
           }
+          required
         />
 
         <input
@@ -54,20 +73,36 @@ export default function Login() {
           placeholder="Password"
           value={password}
           onChange={(e) =>
-            setPassword(
-              e.target.value
-            )
+            setPassword(e.target.value)
           }
+          required
         />
+
+        {error && (
+          <p className="auth-error">
+            {error}
+          </p>
+        )}
 
         <button
           type="submit"
           className="primary-btn"
+          disabled={loading}
         >
-          Login
+          {loading
+            ? "Loading..."
+            : "Login"}
         </button>
 
+        <p className="auth-switch">
+          Don’t have an account?{" "}
+          <Link to="/register">
+            Create one
+          </Link>
+        </p>
+
       </form>
+
     </div>
   );
 }

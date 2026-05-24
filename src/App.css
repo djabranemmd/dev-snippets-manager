@@ -30,3 +30,21 @@
 body.dark .auth-form {
   background: #111827;
 }
+
+.auth-switch {
+  text-align: center;
+  font-size: 14px;
+  margin-top: 8px;
+}
+
+.auth-switch a {
+  color: #2563eb;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.auth-error {
+  color: #dc2626;
+  font-size: 14px;
+  text-align: center;
+}
