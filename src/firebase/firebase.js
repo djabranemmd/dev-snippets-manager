@@ -1,41 +1,24 @@
 import { initializeApp } from "firebase/app";
 
-import {
-  getAuth,
-} from "firebase/auth";
+import { getAuth } from "firebase/auth";
 
-import {
-  getFirestore,
-} from "firebase/firestore";
+import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
-  apiKey:
-    import.meta.env
-      .VITE_FIREBASE_API_KEY,
+  apiKey: "AIzaSyBLhKv16PjGsl45pJDKvrP-AKhynUF-P8o",
 
-  authDomain:
-    import.meta.env
-      .VITE_FIREBASE_AUTH_DOMAIN,
+  authDomain: "dev-snippets-manager.firebaseapp.com",
 
-  projectId:
-    import.meta.env
-      .VITE_FIREBASE_PROJECT_ID,
+  projectId: "dev-snippets-manager",
 
-  storageBucket:
-    import.meta.env
-      .VITE_FIREBASE_STORAGE_BUCKET,
+  storageBucket: "dev-snippets-manager.firebasestorage.app",
 
-  messagingSenderId:
-    import.meta.env
-      .VITE_FIREBASE_MESSAGING_SENDER_ID,
+  messagingSenderId: "445019202822",
 
-  appId:
-    import.meta.env
-      .VITE_FIREBASE_APP_ID,
+  appId: "1:445019202822:web:84d3b72260d9a486a82a87",
 };
 
-const app =
-  initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig);
 
 export const auth = getAuth(app);
 

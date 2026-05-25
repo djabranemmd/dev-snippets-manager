@@ -1,36 +1,21 @@
 import { useState } from "react";
-
-import {
-  signInWithEmailAndPassword,
-} from "firebase/auth";
-
-import {
-  Link,
-  useNavigate,
-} from "react-router-dom";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { Link, useNavigate } from "react-router-dom";
 
 import { auth } from "../firebase/firebase";
 
 export default function Login() {
   const navigate = useNavigate();
 
-  const [email, setEmail] =
-    useState("");
-
+  const [email, setEmail] = useState("");
   const [password, setPassword] =
     useState("");
+  const [error, setError] = useState("");
 
-  const [error, setError] =
-    useState("");
-
-  const [loading, setLoading] =
-    useState(false);
-
-  const handleLogin = async (e) => {
+  async function handleLogin(e) {
     e.preventDefault();
 
     setError("");
-    setLoading(true);
 
     try {
       await signInWithEmailAndPassword(
@@ -41,21 +26,19 @@ export default function Login() {
 
       navigate("/");
 
-    } catch (error) {
-      setError(error.message);
-    } finally {
-      setLoading(false);
+    } catch (err) {
+      setError(
+        "Invalid email or password"
+      );
     }
-  };
+  }
 
   return (
     <div className="auth-page">
-
       <form
         onSubmit={handleLogin}
         className="auth-form"
       >
-
         <h2>Login</h2>
 
         <input
@@ -65,7 +48,6 @@ export default function Login() {
           onChange={(e) =>
             setEmail(e.target.value)
           }
-          required
         />
 
         <input
@@ -73,36 +55,25 @@ export default function Login() {
           placeholder="Password"
           value={password}
           onChange={(e) =>
-            setPassword(e.target.value)
+            setPassword(
+              e.target.value
+            )
           }
-          required
         />
 
-        {error && (
-          <p className="auth-error">
-            {error}
-          </p>
-        )}
+        {error && <p>{error}</p>}
 
-        <button
-          type="submit"
-          className="primary-btn"
-          disabled={loading}
-        >
-          {loading
-            ? "Loading..."
-            : "Login"}
+        <button type="submit">
+          Login
         </button>
 
-        <p className="auth-switch">
-          Don’t have an account?{" "}
+        <p>
+          Don't have an account?{" "}
           <Link to="/register">
-            Create one
+            Register
           </Link>
         </p>
-
       </form>
-
     </div>
   );
 }

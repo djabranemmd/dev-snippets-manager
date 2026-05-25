@@ -1,5 +1,4 @@
 import { useState } from "react";
-
 import {
   createUserWithEmailAndPassword,
 } from "firebase/auth";
@@ -14,23 +13,17 @@ import { auth } from "../firebase/firebase";
 export default function Register() {
   const navigate = useNavigate();
 
-  const [email, setEmail] =
-    useState("");
+  const [email, setEmail] = useState("");
 
   const [password, setPassword] =
     useState("");
 
-  const [error, setError] =
-    useState("");
+  const [error, setError] = useState("");
 
-  const [loading, setLoading] =
-    useState(false);
-
-  const handleRegister = async (e) => {
+  async function handleRegister(e) {
     e.preventDefault();
 
     setError("");
-    setLoading(true);
 
     try {
       await createUserWithEmailAndPassword(
@@ -41,21 +34,19 @@ export default function Register() {
 
       navigate("/");
 
-    } catch (error) {
-      setError(error.message);
-    } finally {
-      setLoading(false);
+    } catch (err) {
+      setError(
+        "Unable to create account"
+      );
     }
-  };
+  }
 
   return (
     <div className="auth-page">
-
       <form
         onSubmit={handleRegister}
         className="auth-form"
       >
-
         <h2>Create Account</h2>
 
         <input
@@ -65,7 +56,6 @@ export default function Register() {
           onChange={(e) =>
             setEmail(e.target.value)
           }
-          required
         />
 
         <input
@@ -73,36 +63,25 @@ export default function Register() {
           placeholder="Password"
           value={password}
           onChange={(e) =>
-            setPassword(e.target.value)
+            setPassword(
+              e.target.value
+            )
           }
-          required
         />
 
-        {error && (
-          <p className="auth-error">
-            {error}
-          </p>
-        )}
+        {error && <p>{error}</p>}
 
-        <button
-          type="submit"
-          className="primary-btn"
-          disabled={loading}
-        >
-          {loading
-            ? "Loading..."
-            : "Create Account"}
+        <button type="submit">
+          Create Account
         </button>
 
-        <p className="auth-switch">
+        <p>
           Already have an account?{" "}
           <Link to="/login">
             Login
           </Link>
         </p>
-
       </form>
-
     </div>
   );
 }
