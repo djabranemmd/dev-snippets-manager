@@ -214,3 +214,50 @@ npm install
 ```bash
 npm run dev
 ```
+
+# 🔥 Firebase Setup
+
+## Create a Firebase project from:
+```bash
+https://console.firebase.google.com/
+```
+
+Enable:
+
+Authentication → Email/Password
+Firestore Database
+
+Then configure:
+```bash
+src/firebase/firebase.js
+```
+
+with your Firebase credentials.
+
+# 🎯 Future Improvements
+
+## Planned next features:
+
+- Share snippets via URL
+- Tags management page
+- Folder organization
+- Snippet collections
+- Public snippets
+- User profile
+- Copy history
+- Snippet analytics
+- Deploy on Vercel
+- Custom domain
+
+# 👨‍💻 Author
+
+Ahmed Djabrane Mammadi
+
+GitHub:
+https://github.com/djabranemmd
+
+# 📄 License
+
+MIT License
+
+Built with ❤️ for developers
